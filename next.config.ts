@@ -4,8 +4,8 @@ const nextConfig = {
   images: {
       unoptimized: true,
   },
-  basePath: '',
-  assetPrefix: '/',
+  basePath: '/alijifi-portfolio.github.io',
+  assetPrefix: '/alijifi-portfolio.github.io/',
   trailingSlash: true,
 }
 

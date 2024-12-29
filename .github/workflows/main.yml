@@ -15,12 +15,10 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  #build job
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
       
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -38,14 +36,15 @@ jobs:
         run: npm run build
       
       - name: Create .nojekyll file
-        run: touch ./out/.nojekyll
+        run: |
+          touch ./out/.nojekyll
+          cp public/.nojekyll ./out/.nojekyll
         
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
 
-  #deployment job
   deploy:
     environment:
       name: github-pages
