@@ -1,32 +1,38 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import './globals.css';  // This is correct - keep this import
 
 const inter = Inter({
-  subsets: ["latin"],
+  subsets: ['latin'],
   display: 'swap',
-  preload: true,
 });
 
 export const metadata: Metadata = {
-  title: "Portfolio Website",
-  description: "My personal portfolio website",
-  icons: {
-    icon: '/favicon.ico',
-  },
+  title: 'Ali Jifi-Bahlool - Portfolio',
+  description: 'Full Stack Developer & AI Engineer focusing on artificial intelligence, web development, and cybersecurity.',
+  robots: 'index, follow',
 };
+
+const getBasePath = () => process.env.NODE_ENV === 'production' ? '/ali-jifi.github.io' : '';
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en">
+    <html lang="en" className={`scroll-smooth ${inter.className}`}>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link 
+          rel="icon" 
+          href={`${getBasePath()}/favicon.ico`} 
+          type="image/x-icon" 
+          sizes="16x16" 
+        />
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body suppressHydrationWarning>
         {children}
       </body>
     </html>
