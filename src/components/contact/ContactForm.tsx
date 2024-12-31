@@ -173,12 +173,16 @@ export const ContactForm = () => {
       </div>
 
       <div className="mb-4 flex justify-center">
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-          onChange={handleCaptchaChange}
-          theme="dark"
-        />
+        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+            onChange={handleCaptchaChange}
+            theme="dark"
+          />
+        ) : (
+          <div className="text-red-600">ReCAPTCHA configuration error</div>
+        )}
       </div>
 
       {error && (
