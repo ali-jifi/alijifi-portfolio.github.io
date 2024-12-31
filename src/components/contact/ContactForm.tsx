@@ -92,8 +92,8 @@ export const ContactForm = () => {
       const formattedSubmitTime = new Date().toLocaleString();
 
       const result = await emailjs.send(
-        'service_g03v4em',
-        'template_ibyk7hm',
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID!,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID!,
         {
           user_email: email,
           message: message,
@@ -101,7 +101,7 @@ export const ContactForm = () => {
           form_load_time: formattedLoadTime,
           'g-recaptcha-response': captchaToken
         },
-        'tuWQqc2yzUx6WXvfL'
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
 
       if (result.status === 200) {
@@ -175,7 +175,7 @@ export const ContactForm = () => {
       <div className="mb-4 flex justify-center">
         <ReCAPTCHA
           ref={recaptchaRef}
-          sitekey="6LfvcKcqAAAAAGtMFkt77iqMNfiIn9DZAA1hs0qQ"
+          sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
           onChange={handleCaptchaChange}
           theme="dark"
         />

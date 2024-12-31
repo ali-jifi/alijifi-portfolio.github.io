@@ -16,15 +16,24 @@ interface RateLimitInfo {
     }
   
     private getLimitInfo(): RateLimitInfo {
-      const info = localStorage.getItem(this.key);
-      if (!info) {
+      try {
+        const info = localStorage.getItem(this.key);
+        if (!info) {
+          return {
+            attempts: 0,
+            firstAttempt: Date.now(),
+            lastAttempt: Date.now()
+          };
+        }
+        return JSON.parse(info);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      } catch (error) {
         return {
           attempts: 0,
           firstAttempt: Date.now(),
           lastAttempt: Date.now()
         };
       }
-      return JSON.parse(info);
     }
   
     private saveLimitInfo(info: RateLimitInfo): void {
