@@ -34,14 +34,14 @@ const Skills: Skill[] = [
     name: "Supabase Database Management",
     category: "Database",
     icon: <Database className="text-teal-500" />,
-    description: "Working with and maintaing a Supabase database for consumer applications",
+    description: "Working with and maintaining a Supabase database for consumer applications",
     experience: "1 year"
   },
   {
     name: "MySQL Database Management",
     category: "Database",
     icon: <Database className="text-teal-500" />,
-    description: "Working with and maintaing a MySQL databases for personal projects",
+    description: "Working with and maintaining MySQL databases for personal projects",
     experience: "1 year"
   },
   {
