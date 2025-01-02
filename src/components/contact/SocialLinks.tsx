@@ -5,7 +5,7 @@ import { Github, Mail, Linkedin } from 'lucide-react';
 
 export const SocialLinks = () => {
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const email = 'alijifi12@gmail.com';
+  const email = 'alijifibahlool@gmail.com';
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(email);

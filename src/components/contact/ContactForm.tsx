@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { ClientRateLimiter } from '@/utils/rateLimiter';
 import { SecurityUtils } from '@/utils/securityUtils';
 
@@ -12,10 +11,8 @@ export const ContactForm = () => {
   const [honeypot, setHoneypot] = useState(''); // honeypot field
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [error, setError] = useState<string | null>(null);
-  const [captchaToken, setCaptchaToken] = useState<string | null>(null);
   const [formStartTime] = useState(Date.now()); // track when form was loaded
   const formRef = useRef<HTMLFormElement>(null);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const rateLimiter = new ClientRateLimiter('contact-form');
 
   // initialize session-based rate limiting
@@ -84,7 +81,6 @@ export const ContactForm = () => {
         message: message,
         submission_time: new Date().toISOString(),
         form_load_time: new Date(formStartTime).toISOString(),
-        'g-recaptcha-response': captchaToken
       };
 
       // format timestamps
@@ -99,7 +95,6 @@ export const ContactForm = () => {
           message: message,
           submission_time: formattedSubmitTime,
           form_load_time: formattedLoadTime,
-          'g-recaptcha-response': captchaToken
         },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       );
@@ -108,8 +103,6 @@ export const ContactForm = () => {
         setStatus('success');
         setEmail('');
         setMessage('');
-        setCaptchaToken(null);
-        recaptchaRef.current?.reset();
       } else {
         throw new Error('Failed to send message');
       }
@@ -118,10 +111,6 @@ export const ContactForm = () => {
       setStatus('error');
       setError(error instanceof Error ? error.message : 'An unexpected error occurred');
     }
-  };
-
-  const handleCaptchaChange = (token: string | null) => {
-    setCaptchaToken(token);
   };
 
   return (
@@ -172,19 +161,6 @@ export const ContactForm = () => {
         />
       </div>
 
-      <div className="mb-4 flex justify-center">
-        {process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ? (
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
-            onChange={handleCaptchaChange}
-            theme="dark"
-          />
-        ) : (
-          <div className="text-red-600">ReCAPTCHA configuration error</div>
-        )}
-      </div>
-
       {error && (
         <div className="mb-4 text-red-600 dark:text-red-400 text-center">
           {error}
@@ -193,9 +169,9 @@ export const ContactForm = () => {
 
       <button
         type="submit"
-        disabled={status === 'sending' || !captchaToken}
+        disabled={status === 'sending'}
         className={`w-full py-2 rounded-lg transition-colors ${
-          status === 'sending' || !captchaToken
+          status === 'sending'
             ? 'bg-gray-400 cursor-not-allowed'
             : 'bg-blue-600 hover:bg-blue-700'
         } text-white`}
